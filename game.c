@@ -34,6 +34,33 @@ int charToInt(char *arr) {
 	return number;
 }
 
+
+int check(char *result, char *code, char *guess) {
+	int win = 0;
+	int count = 0;
+	int i;
+	int j;
+	for (i = 0; i < 4; i++) {
+		for (j = 0; j < 4; j++) {
+			if (i == j && code[i] == guess[j]) {
+				result[i] = 'X';
+				count++;
+				break;
+			}
+			else if (i != j && code[i] == guess[j]) {
+				result[i] = 'Z';
+				break;
+			}
+		}
+	}
+	if (count == 4) {
+		return 0;
+	}
+	else {
+		return 1;
+	}
+}
+
 int checkGuess(char *result, char *code, char *guess) {
 	int win = 0;
 	int j;
@@ -74,13 +101,14 @@ int main() {
 	write(1, instructionsMsg, sizeof(instructionsMsg) -1);
 	write(1, insertGuessMsg, sizeof(insertGuessMsg) -1);
 	read(0, &guess, 5);
-	win = checkGuess(result, code, guess);
+	win = check(result, code, guess);
 	write(1, "result: ", 7);
 	write(1, result, sizeof(result) -1);
 	for (i = 0; i < 9 && win == 1; i++) {
+		initResult(result);
 		write(1, insertGuessMsg, sizeof(insertGuessMsg) -1);
 		read(0, &guess, 5);
-		win = checkGuess(result, code, guess);;
+		win = check(result, code, guess);;
 		write(1, result, sizeof(result) -1);
 	}
 	if (win == 0) {
