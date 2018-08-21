@@ -11,6 +11,7 @@ int getRandom() {
 	if (r < 0) {
 		r *= -1;
 	}
+	// Only use it so I know the answer.
 	printf("randomNumber:%ld\n", r);
 	return r;
 }
@@ -32,10 +33,6 @@ int charToInt(char *arr) {
 	}
 	return number;
 }
-
-//int checkGuess(char *result, int code, int guess) {
-//	int win = 0;
-//}
 
 int checkGuess(char *result, char *code, char *guess) {
 	int win = 0;
@@ -62,7 +59,7 @@ void initResult(char *result) {
 int main() {
 	int win = 1;
 	char welcomeMsg[] = "\nWelcome to Bulls & Cows!\n";
-	char instructionsMsg[] = "Instructions:\nThe computer generate a 4 digit number and you have 10 guesses to find it\nFor each guess you will receive a result\n";
+	char instructionsMsg[] = "Instructions:\nThe computer generate a 4 digit number and you have 10 guesses to find it\nFor each guess you will receive a result indicating if you guessed a digit successfully\n(O = No, X = Yes)\n";
 	char insertGuessMsg[] = "Type your guess:\n";
 	char winMsg[] = "\nYou Won!\n";
 	char loseMsg[] = "\nYou lose!\n";
@@ -78,13 +75,13 @@ int main() {
 	write(1, insertGuessMsg, sizeof(insertGuessMsg) -1);
 	read(0, &guess, 5);
 	win = checkGuess(result, code, guess);
+	write(1, "result: ", 7);
 	write(1, result, sizeof(result) -1);
 	for (i = 0; i < 9 && win == 1; i++) {
 		write(1, insertGuessMsg, sizeof(insertGuessMsg) -1);
 		read(0, &guess, 5);
 		win = checkGuess(result, code, guess);;
 		write(1, result, sizeof(result) -1);
-		i++;
 	}
 	if (win == 0) {
 		write(1, winMsg, sizeof(winMsg) -1);
